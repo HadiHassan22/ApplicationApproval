@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0611ysg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.3">
+  <bpmn:process id="applicationApproval" name="Approve Application" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Application Created">
+      <bpmn:outgoing>Flow_1doxgbg</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_1mbeg36" name="Approved?">
+      <bpmn:incoming>Flow_05lf2f2</bpmn:incoming>
+      <bpmn:outgoing>Flow_18pvf17</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0zzn64c</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1fhj8pv" name="Application Rejected">
+      <bpmn:incoming>Flow_0zzn64c</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_139ljni" name="Application Approved">
+      <bpmn:incoming>Flow_18pvf17</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1doxgbg" sourceRef="StartEvent_1" targetRef="approveApplication" />
+    <bpmn:sequenceFlow id="Flow_05lf2f2" sourceRef="approveApplication" targetRef="Gateway_1mbeg36" />
+    <bpmn:sequenceFlow id="Flow_18pvf17" name="Yes - Approved" sourceRef="Gateway_1mbeg36" targetRef="Event_139ljni">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0zzn64c" name="No - Denied" sourceRef="Gateway_1mbeg36" targetRef="Event_1fhj8pv">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!approved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="approveApplication" name="Approve Application" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="approved" label="Approved?" type="boolean" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1doxgbg</bpmn:incoming>
+      <bpmn:outgoing>Flow_05lf2f2</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="bpmndiagram_1">
+    <bpmndi:BPMNPlane id="bpmnPlane_1" bpmnElement="applicationApproval">
+      <bpmndi:BPMNEdge id="Flow_0zzn64c_di" bpmnElement="Flow_0zzn64c">
+        <di:waypoint x="550" y="202" />
+        <di:waypoint x="550" y="240" />
+        <di:waypoint x="672" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="580" y="243" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18pvf17_di" bpmnElement="Flow_18pvf17">
+        <di:waypoint x="550" y="152" />
+        <di:waypoint x="550" y="110" />
+        <di:waypoint x="672" y="110" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="572" y="113" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05lf2f2_di" bpmnElement="Flow_05lf2f2">
+        <di:waypoint x="430" y="177" />
+        <di:waypoint x="525" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1doxgbg_di" bpmnElement="Flow_1doxgbg">
+        <di:waypoint x="198" y="177" />
+        <di:waypoint x="330" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_bpmnShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="202" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1mbeg36_di" bpmnElement="Gateway_1mbeg36" isMarkerVisible="true">
+        <dc:Bounds x="525" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="573" y="183" width="53" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1fhj8pv_di" bpmnElement="Event_1fhj8pv">
+        <dc:Bounds x="672" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="663" y="265" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_139ljni_di" bpmnElement="Event_139ljni">
+        <dc:Bounds x="672" y="92" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="663" y="135" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v5mx0z_di" bpmnElement="approveApplication">
+        <dc:Bounds x="330" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
